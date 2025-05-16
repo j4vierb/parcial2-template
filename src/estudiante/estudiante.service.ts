@@ -28,7 +28,20 @@ export class EstudianteService {
       );
     }
 
-    // revisar correo
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(estudiante.correo)) {
+      throw new BussinessLogicException(
+        'El email no es valido',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+    const simbolosRegex = /[!@#$%^&*(),.?":{}|<>]/g;
+    if (simbolosRegex.test(estudiante.nombre)) {
+      throw new BussinessLogicException(
+        'El nombre no es valido',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
 
     return this.estudianteRepository.save(estudiante);
   }

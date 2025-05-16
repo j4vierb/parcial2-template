@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BaseModule } from './base/base.module';
 import { ExampleEntity } from './base/example.entity';
+import { EstudianteModule } from './estudiante/estudiante.module';
+import { ActividadModule } from './actividad/actividad.module';
+import { ReseñaModule } from './reseña/reseña.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { ExampleEntity } from './base/example.entity';
       synchronize: true,
       dropSchema: true,
     }),
+    EstudianteModule,
+    ActividadModule,
+    ReseñaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

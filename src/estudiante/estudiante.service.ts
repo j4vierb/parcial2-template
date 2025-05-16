@@ -1,0 +1,76 @@
+import { Injectable, UseInterceptors } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BusinessErrorsInterceptor } from 'src/shared/interceptors/business-errors.interceptor';
+import { EstudianteEntity } from './estudiante.entity';
+import { Repository } from 'typeorm';
+import {
+  BussinessError,
+  BussinessLogicException,
+} from 'src/shared/business-errors';
+import { ActividadEntity } from 'src/actividad/actividad.entity';
+
+@Injectable()
+@UseInterceptors(BusinessErrorsInterceptor)
+export class EstudianteService {
+  @InjectRepository(EstudianteEntity)
+  private readonly estudianteRepository: Repository<EstudianteEntity>;
+
+  @InjectRepository(ActividadEntity)
+  private readonly actividadRepository: Repository<ActividadEntity>;
+
+  async crearEstudiante(
+    estudiante: EstudianteEntity,
+  ): Promise<EstudianteEntity> {
+    if (estudiante.semestre < 1 && estudiante.semestre > 10) {
+      throw new BussinessLogicException(
+        'El semestre no es valido',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    // revisar correo
+
+    return this.estudianteRepository.save(estudiante);
+  }
+
+  async findEstudianteById(id: number): Promise<EstudianteEntity> {
+    const estudiante = await this.estudianteRepository.findOne({
+      where: { id },
+    });
+
+    if (!estudiante) {
+      throw new BussinessLogicException(
+        'Estudiante no existe',
+        BussinessError.NOT_FOUND,
+      );
+    }
+
+    return estudiante;
+  }
+
+  async inscribirseActividad(estudianteId: number, actividadId: number) {
+    const estudiante = await this.estudianteRepository.findOne({
+      where: { id: estudianteId },
+    });
+
+    if (!estudiante) {
+      throw new BussinessLogicException(
+        'Estudiante no existe',
+        BussinessError.NOT_FOUND,
+      );
+    }
+
+    const actividad = await this.actividadRepository.findOne({
+      where: { id: actividadId },
+    });
+
+    if (!actividad) {
+      throw new BussinessLogicException(
+        'Actividad no existe',
+        BussinessError.NOT_FOUND,
+      );
+    }
+
+    return estudiante;
+  }
+}

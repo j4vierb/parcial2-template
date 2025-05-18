@@ -61,7 +61,10 @@ export class EstudianteService {
     return estudiante;
   }
 
-  async inscribirseActividad(estudianteId: number, actividadId: number) {
+  async inscribirseActividad(
+    estudianteId: number,
+    actividadId: number,
+  ): Promise<EstudianteEntity> {
     const estudiante = await this.estudianteRepository.findOne({
       where: { id: estudianteId },
     });
@@ -84,6 +87,36 @@ export class EstudianteService {
       );
     }
 
-    return estudiante;
+    if (actividad.cupoMaximo <= 0) {
+      throw new BussinessLogicException(
+        'Actividad sin cupo',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    if (estudiante.actividades) {
+      const actividadInscrita = estudiante.actividades.find(
+        (actividad) => actividad.id === actividadId,
+      );
+      if (actividadInscrita) {
+        throw new BussinessLogicException(
+          'Estudiante ya inscrito en la actividad',
+          BussinessError.PRECONDITION_FAILED,
+        );
+      }
+    }
+
+    if (actividad.estado !== 0) {
+      throw new BussinessLogicException(
+        'Actividad no disponible',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    estudiante.actividades = [...(estudiante.actividades || []), actividad];
+    actividad.cupoMaximo -= 1;
+
+    await this.actividadRepository.save(actividad);
+    return await this.estudianteRepository.save(estudiante);
   }
 }

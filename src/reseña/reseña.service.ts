@@ -22,6 +22,9 @@ export class ReseñaService {
   @InjectRepository(ActividadEntity)
   private readonly actividadRepository: Repository<ActividadEntity>;
 
+  /**
+   * La actividad esta finalizada y el estudiante estuvo inscrito en la actividad
+   */
   async agregarReseña(
     reseña: ReseñaEntity,
     estudianteId: number,
@@ -29,6 +32,7 @@ export class ReseñaService {
   ) {
     const estudiante = await this.estudianteRepository.findOne({
       where: { id: estudianteId },
+      relations: ['actividades'],
     });
 
     if (!estudiante) {
@@ -49,7 +53,7 @@ export class ReseñaService {
       );
     }
 
-    if (actividad.estado == 0) {
+    if (actividad.estado !== 2) {
       throw new BussinessLogicException(
         'actividad no finalizada',
         BussinessError.PRECONDITION_FAILED,
@@ -67,7 +71,8 @@ export class ReseñaService {
       );
     }
 
-    actividad.reseña.push(reseña);
+    reseña.estudiante = estudiante;
+    reseña.actividad = actividad;
     return await this.reseñaRepository.save(reseña);
   }
 

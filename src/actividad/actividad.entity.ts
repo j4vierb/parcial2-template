@@ -1,8 +1,9 @@
-import { EstudianteEntity } from 'src/estudiante/estudiante.entity';
-import { ReseñaEntity } from 'src/reseña/reseña.entity';
+import { EstudianteEntity } from '../estudiante/estudiante.entity';
+import { ReseñaEntity } from '../reseña/reseña.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -27,6 +28,7 @@ export class ActividadEntity {
   estado: number;
 
   @ManyToMany(() => EstudianteEntity, (estudiantes) => estudiantes.actividades)
+  @JoinTable()
   estudiantes: EstudianteEntity[];
 
   @OneToMany(() => ReseñaEntity, (reseña) => reseña.actividad)

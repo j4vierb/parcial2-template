@@ -3,17 +3,21 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class ReseñaWithIdsdto {
   @IsString()
   @IsNotEmpty()
-  comentario: string;
+  readonly comentario: string;
 
   @IsString()
   @IsNotEmpty()
-  fecha: string;
+  readonly fecha: string;
 
   @IsNotEmpty()
   @IsNumber()
-  calificacion: number;
+  readonly calificacion: number;
 
   @IsNumber()
   @IsNotEmpty()
-  idEstudiante: number;
+  readonly idEstudiante: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly idActividad: number;
 }

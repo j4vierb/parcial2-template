@@ -1,17 +1,15 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BusinessErrorsInterceptor } from 'src/shared/interceptors/business-errors.interceptor';
 import { ReseñaEntity } from './reseña.entity';
 import { Repository } from 'typeorm';
 import {
   BussinessError,
   BussinessLogicException,
-} from 'src/shared/business-errors';
-import { EstudianteEntity } from 'src/estudiante/estudiante.entity';
-import { ActividadEntity } from 'src/actividad/actividad.entity';
+} from '../shared/business-errors';
+import { EstudianteEntity } from '../estudiante/estudiante.entity';
+import { ActividadEntity } from '../actividad/actividad.entity';
 
 @Injectable()
-@UseInterceptors(BusinessErrorsInterceptor)
 export class ReseñaService {
   @InjectRepository(ReseñaEntity)
   private readonly reseñaRepository: Repository<ReseñaEntity>;
@@ -73,11 +71,22 @@ export class ReseñaService {
 
     reseña.estudiante = estudiante;
     reseña.actividad = actividad;
-    return await this.reseñaRepository.save(reseña);
+    await this.reseñaRepository.save(reseña);
+    const newReseña = await this.reseñaRepository.findOne({
+      where: { id: reseña.id },
+    });
+    if (!newReseña) {
+      throw new BussinessLogicException(
+        'no se pudo guardar la reseña',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    return newReseña;
   }
 
   async findClaseById(id: number) {
-    const clase = await this.reseñaRepository.find({ where: { id } });
+    const clase = await this.reseñaRepository.findOne({ where: { id } });
 
     if (!clase) {
       throw new BussinessLogicException(

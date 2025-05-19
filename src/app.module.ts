@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BaseModule } from './base/base.module';
-import { ExampleEntity } from './base/example.entity';
 import { EstudianteModule } from './estudiante/estudiante.module';
 import { ActividadModule } from './actividad/actividad.module';
 import { ReseñaModule } from './reseña/reseña.module';
+import { ActividadEntity } from './actividad/actividad.entity';
+import { ReseñaEntity } from './reseña/reseña.entity';
+import { EstudianteEntity } from './estudiante/estudiante.entity';
 
 @Module({
   imports: [
-    BaseModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -18,7 +18,7 @@ import { ReseñaModule } from './reseña/reseña.module';
       username: 'postgres',
       password: 'postgres',
       database: 'parcial2',
-      entities: [ExampleEntity],
+      entities: [ActividadEntity, ReseñaEntity, EstudianteEntity],
       synchronize: true,
       dropSchema: true,
     }),

@@ -1,15 +1,13 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
-import { BusinessErrorsInterceptor } from 'src/shared/interceptors/business-errors.interceptor';
+import { Injectable } from '@nestjs/common';
 import { ActividadEntity } from './actividad.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   BussinessError,
   BussinessLogicException,
-} from 'src/shared/business-errors';
+} from '../shared/business-errors';
 
 @Injectable()
-@UseInterceptors(BusinessErrorsInterceptor)
 export class ActividadService {
   @InjectRepository(ActividadEntity)
   private readonly actividadRepository: Repository<ActividadEntity>;
@@ -88,13 +86,13 @@ export class ActividadService {
       const estudiantes = actividad.estudiantes.length;
       const cupoMaximo = actividad.cupoMaximo;
 
-      if (estudiantes / cupoMaximo >= 0.8) {
-        actividad.estado = estado;
-      } else {
+      if (estudiantes / cupoMaximo < 0.8) {
         throw new BussinessLogicException(
           'No se puede cerrar la actividad, el cupo no es suficiente',
           BussinessError.PRECONDITION_FAILED,
         );
+      } else {
+        actividad.estado = estado;
       }
     }
 

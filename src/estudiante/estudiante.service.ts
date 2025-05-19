@@ -1,16 +1,14 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BusinessErrorsInterceptor } from 'src/shared/interceptors/business-errors.interceptor';
 import { EstudianteEntity } from './estudiante.entity';
 import { Repository } from 'typeorm';
 import {
   BussinessError,
   BussinessLogicException,
-} from 'src/shared/business-errors';
-import { ActividadEntity } from 'src/actividad/actividad.entity';
+} from '../shared/business-errors';
+import { ActividadEntity } from '../actividad/actividad.entity';
 
 @Injectable()
-@UseInterceptors(BusinessErrorsInterceptor)
 export class EstudianteService {
   @InjectRepository(EstudianteEntity)
   private readonly estudianteRepository: Repository<EstudianteEntity>;
@@ -21,7 +19,7 @@ export class EstudianteService {
   async crearEstudiante(
     estudiante: EstudianteEntity,
   ): Promise<EstudianteEntity> {
-    if (estudiante.semestre < 1 && estudiante.semestre > 10) {
+    if (estudiante.semestre < 1 || estudiante.semestre > 10) {
       throw new BussinessLogicException(
         'El semestre no es valido',
         BussinessError.PRECONDITION_FAILED,
@@ -67,6 +65,7 @@ export class EstudianteService {
   ): Promise<EstudianteEntity> {
     const estudiante = await this.estudianteRepository.findOne({
       where: { id: estudianteId },
+      relations: ['actividades'],
     });
 
     if (!estudiante) {
@@ -78,6 +77,7 @@ export class EstudianteService {
 
     const actividad = await this.actividadRepository.findOne({
       where: { id: actividadId },
+      relations: ['estudiantes'],
     });
 
     if (!actividad) {
@@ -87,9 +87,16 @@ export class EstudianteService {
       );
     }
 
-    if (actividad.cupoMaximo <= 0) {
+    if (actividad.estudiantes.length - actividad.cupoMaximo === 0) {
       throw new BussinessLogicException(
         'Actividad sin cupo',
+        BussinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    if (actividad.estado !== 0) {
+      throw new BussinessLogicException(
+        'Actividad no disponible',
         BussinessError.PRECONDITION_FAILED,
       );
     }
@@ -104,19 +111,15 @@ export class EstudianteService {
           BussinessError.PRECONDITION_FAILED,
         );
       }
-    }
-
-    if (actividad.estado !== 0) {
+    } else {
       throw new BussinessLogicException(
-        'Actividad no disponible',
+        'Estudiante no tiene actividades',
         BussinessError.PRECONDITION_FAILED,
       );
     }
 
     estudiante.actividades = [...(estudiante.actividades || []), actividad];
-    actividad.cupoMaximo -= 1;
 
-    await this.actividadRepository.save(actividad);
     return await this.estudianteRepository.save(estudiante);
   }
 }

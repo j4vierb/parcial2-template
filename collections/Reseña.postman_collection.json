@@ -1,0 +1,440 @@
+{
+	"info": {
+		"_postman_id": "54beb72a-9939-400c-b119-5b7c27c823ba",
+		"name": "Reseña",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32617270",
+		"_collection_link": "https://parcial-4365.postman.co/workspace/fecad9d0-38a8-4bf5-a9ff-f917b74d15a6/collection/32617270-54beb72a-9939-400c-b119-5b7c27c823ba?action=share&source=collection_link&creator=32617270"
+	},
+	"item": [
+		{
+			"name": "Agregar reseña",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('calification is 5', function() {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data.calificacion).to.be.eql(5);\r",
+							"    pm.expect(data.fecha).to.be.eql(\"26-06-2025\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 1,\r\n    \"idActividad\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/resenias/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenias",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar reseña",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 1,\r\n    \"idActividad\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resenias/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenias",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\r\n    \"id\": 1,\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"calificacion\": 5,\r\n    \"fecha\": \"26-06-2025\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar reseña (Estudiante no existe)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const OBJ = {\r",
+							"    \"statusCode\": 404,\r",
+							"    \"message\": \"estudiante no encontrado\"\r",
+							"};\r",
+							"\r",
+							"pm.test('the error object is as expected', function() {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data).to.be.eql(OBJ);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 999,\r\n    \"idActividad\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/resenias/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenias",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Estudiante no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 999,\r\n    \"idActividad\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resenias/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenias",
+								""
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"estudiante no encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar reseña (Actividad no encontrada)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const OBJ = {\r",
+							"    \"statusCode\": 404,\r",
+							"    \"message\": \"actividad no encontrada\"\r",
+							"};\r",
+							"\r",
+							"pm.test('calification is 5', function() {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data).to.be.eql(OBJ);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 1,\r\n    \"idActividad\": 999\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/resenias/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenias",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actividad no encontrada",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\r\n    \"fecha\": \"26-06-2025\",\r\n    \"calificacion\": 5,\r\n    \"idEstudiante\": 1,\r\n    \"idActividad\": 999\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resenias/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenias",
+								""
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"actividad no encontrada\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener reseña",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const RESPONSE_OBJ = {\r",
+							"    \"id\": 1,\r",
+							"    \"comentario\": \"Podrían haber hecho algo mejor!\",\r",
+							"    \"calificacion\": 5,\r",
+							"    \"fecha\": \"26-06-2025\"\r",
+							"};\r",
+							"\r",
+							"pm.test('the response is equal', function () {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data).to.be.eql(RESPONSE_OBJ);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/resenias/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenias",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener reseña",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resenias/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenias",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\n    \"id\": 1,\n    \"comentario\": \"Podrían haber hecho algo mejor!\",\n    \"calificacion\": 5,\n    \"fecha\": \"26-06-2025\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener reseña (No encontrada)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const RESPONSE_OBJ = {\r",
+							"    \"statusCode\": 404,\r",
+							"    \"message\": \"no se encontro la reseña\"\r",
+							"};\r",
+							"\r",
+							"pm.test('the response is equal', function () {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data).to.be.eql(RESPONSE_OBJ);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/resenias/999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenias",
+						"999"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Reseña no encontrada",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resenias/999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenias",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"no se encontro la reseña\"\n}"
+				}
+			]
+		}
+	]
+}

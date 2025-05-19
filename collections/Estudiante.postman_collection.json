@@ -1,0 +1,645 @@
+{
+	"info": {
+		"_postman_id": "5bbbfdf6-a1dc-4d3c-97c9-086961145640",
+		"name": "Estudiante",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32617270",
+		"_collection_link": "https://parcial-4365.postman.co/workspace/fecad9d0-38a8-4bf5-a9ff-f917b74d15a6/collection/32617270-5bbbfdf6-a1dc-4d3c-97c9-086961145640?action=share&source=collection_link&creator=32617270"
+	},
+	"item": [
+		{
+			"name": "Crear estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json()\r",
+							"pm.globals.set(\"estudiante_id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const OBJ = {\r",
+							"    \"id\": 1,\r",
+							"    \"nombre\": \"Camilo\",\r",
+							"    \"cedula\": 1070938485,\r",
+							"    \"correo\": \"garcia.c@uniandes.edu.co\",\r",
+							"    \"programa\": \"ISIS\",\r",
+							"    \"semestre\": 3\r",
+							"};\r",
+							"\r",
+							"pm.test(\"\", function() {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res).to.be.eql(OBJ);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia.c@uniandes.edu.co\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear estudiante",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia.c@uniandes.edu.co\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\n    \"id\": 1,\n    \"nombre\": \"Camilo\",\n    \"cedula\": 1070938485,\n    \"correo\": \"garcia.c@uniandes.edu.co\",\n    \"programa\": \"ISIS\",\n    \"semestre\": 3\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear estudiante (Semestre invalido)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json()\r",
+							"pm.globals.set(\"estudiante_id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 412\", function () {\r",
+							"   pm.response.to.have.status(412);\r",
+							"});\r",
+							"\r",
+							"const OBJ = {\r",
+							"    \"statusCode\": 412,\r",
+							"    \"message\": \"El semestre no es valido\"\r",
+							"};\r",
+							"\r",
+							"pm.test(\"\", function() {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res).to.be.eql(OBJ);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia.c@uniandes.edu.co\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Semestre invalido",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia.c@uniandes.edu.co\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								""
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"El semestre no es valido\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear estudiante (Correo no valido)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json()\r",
+							"pm.globals.set(\"estudiante_id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 412\", function () {\r",
+							"   pm.response.to.have.status(412);\r",
+							"});\r",
+							"\r",
+							"const OBJ = {\r",
+							"    \"statusCode\": 412,\r",
+							"    \"message\": \"El email no es valido\"\r",
+							"};\r",
+							"\r",
+							"pm.test(\"\", function() {\r",
+							"    let res = pm.response.json();\r",
+							"    pm.expect(res).to.be.eql(OBJ);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correo no valido",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								""
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"El email no es valido\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Inscribir estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('The student enrollment is succefull', function() {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data.programa).to.eql(\"ISIS\");\r",
+							"    pm.expect(data.semestre).to.eql(3);\r",
+							"    pm.expect(data.actividades).to.have.length.greaterThan(0);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actividadId\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"1",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Inscribir estudiante",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actividadId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"1",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\n    \"id\": 1,\n    \"nombre\": \"Camilo\",\n    \"cedula\": 1070938485,\n    \"correo\": \"garcia.c@uniandes.edu.co\",\n    \"programa\": \"ISIS\",\n    \"semestre\": 3,\n    \"actividades\": [\n        {\n            \"id\": 1,\n            \"titulo\": \"Actividad 1: creando una API!\",\n            \"fecha\": \"24-06-2025\",\n            \"cupoMaximo\": 1,\n            \"estado\": 0,\n            \"estudiantes\": []\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Inscribir estudiante (Estudiante no existe)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const obj = {\r",
+							"    \"statusCode\": 404,\r",
+							"    \"message\": \"Estudiante no existe\"\r",
+							"};\r",
+							"\r",
+							"pm.test('The student enrollment is succefull', function() {\r",
+							"    let data = pm.response.json();\r",
+							"    pm.expect(data).to.be.eql(obj);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actividadId\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes/999/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"999",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Estudiante no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actividadId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes/999/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"999",
+								""
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"Estudiante no existe\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener un estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json()\r",
+							"\r",
+							"pm.test('Estudiante is the object ', function () {\r",
+							"   pm.expect(data.cedula).to.eql(1070938485);\r",
+							"   pm.expect(data.programa).to.eql(\"ISIS\");\r",
+							"   pm.expect(data.semestre).to.eql(3);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/estudiantes/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"1",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un estudiante",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/estudiantes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"Camilo\",\r\n    \"cedula\": 1070938485,\r\n    \"correo\": \"garcia.c@uniandes.edu.co\",\r\n    \"programa\": \"ISIS\",\r\n    \"semestre\": 3\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener un estudiante (Estudiante no existe)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json()\r",
+							"\r",
+							"const obj = {\r",
+							"    \"statusCode\": 404,\r",
+							"    \"message\": \"Estudiante no existe\"\r",
+							"};\r",
+							"\r",
+							"pm.test('Estudiante is the object ', function () {\r",
+							"   pm.expect(pm.response.json()).to.eql(obj);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/estudiantes/999/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"999",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Estudiante no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/estudiantes/999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"Estudiante no existe\"\n}"
+				}
+			]
+		}
+	]
+}
